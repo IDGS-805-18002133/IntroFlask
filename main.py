@@ -116,7 +116,7 @@ def operas():
                 resultado = num1 * num2
             elif operacion == 'division':
                 if num2 == 0:
-                    resultado = 'no se puede dividir entre cero'
+                    resultado = 'no se puede dividir entre cero XD'
                 else:
                     resultado = num1 / num2
 
