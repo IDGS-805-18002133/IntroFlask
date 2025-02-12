@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block container %}
+<div class="container text-center"
+    style="background-color:rgba(26, 26, 226, 0.726);color: white; padding: 20px; border-radius: 10px;">
+    <h1 class="mb-3" style="font-weight: bold; font-size:30px;">Cinépolis</h1>
+
+    <form action="/cinepolis" method="POST">
+        <div class="row">
+            <div class="col-md-6 text-start"
+                style=" background: rgba(0, 0, 0, 0.6); border: 2px solid white; padding: 15px; border-radius: 10px;">
+                <h2 class="mb-3">Entradas</h2>
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" class="form-control mb-2">
+
+                <label>Cantidad de compradores:</label>
+                <input type="number" name="cantidadCom" class="form-control mb-2">
+
+                <label>Tarjeta Cineco:</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tarjeta" value="si" id="si">
+                    <label class="form-check-label" for="si">Sí</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="tarjeta" value="no" id="no">
+                    <label class="form-check-label" for="no">No</label>
+                </div><br>
+
+                <label class="mt-2" for="cantidadBol">Cantidad de Boletos:</label>
+                <input type="number" name="cantidadBol" class="form-control mb-2">
+            </div>
+
+            <div class="col-md-6 text-start d-flex flex-column align-items-start"
+                style="border: 2px solid white; padding: 15px; border-radius: 10px; background: rgba(0, 0, 0, 0.6); max-height: fit-content;">
+                <h2 class="mb-3">Salidas</h2>
+                {% if resultado is not none %}
+                <label>Valor a pagar:</label>
+                <input type="text" value="{{totalApagar}}" class="form-control" readonly>
+                {% endif %}
+                {% if error is not none %}
+                <label class="text-danger">Error:</label> <span class="text-danger">{{error}}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row mt-4 justify-content-center">
+            <div class="col-md-6 text-center"
+                style="border: 2px solid white; padding: 15px; border-radius: 10px; background: rgba(0, 0, 0, 0.6);">
+                <h2 class="mb-3">Acciones</h2>
+                <button type="submit" class="btn btn-light">Procesar</button>
+                <button type="reset" class="btn btn-light">Salir</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

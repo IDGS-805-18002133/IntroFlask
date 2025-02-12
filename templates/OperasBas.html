@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block container %}
+
+<form action="/OperasBas" method="POST">
+    <label>N1:</label>
+    <input type="text" name="n1" id="n1"><br>
+    
+    <label>N2:</label>
+    <input type="text" name="n2" id="n2"><br>
+
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="operacion" value="suma" id="suma" required>
+        <label class="form-check-label" for="suma">Suma</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="operacion" value="resta" id="resta">
+        <label class="form-check-label" for="resta">Resta</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="operacion" value="multiplicacion" id="multiplicacion">
+        <label class="form-check-label" for="multiplicacion">Multiplicación</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="operacion" value="division" id="division">
+        <label class="form-check-label" for="division">División</label>
+    </div>
+
+    <input type="submit" value="Calcular">
+</form>
+
+{% if resultado is not none %}
+    <h3>Resultado: {{ resultado }}</h3>
+{% else %}
+    <h3>Sin resultado</h3>
+{% endif %}
+
+{% endblock %}

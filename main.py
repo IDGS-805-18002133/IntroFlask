@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 
 app = Flask(__name__)
 
@@ -49,6 +49,81 @@ def form1():
     <input type="text"><br>
     </form>
     '''
+    
+class ticket:
+    def __init__(self):
+        self.nombreDuenioTicket = ""
+        self.cantPersonas = 0
+        self.totalBoletos = 0
+        self.totalAPagarTicket = 0.0
+        self.porcentajeDescuentoTotal = 0.0
+        self.metodoPago = ""
+
+    def calcularPago(boletos, metodoPago):
+        porcentajeDescuentoTotal = 0.0
+        if boletos >= 6:
+            porcentajeDescuentoTotal += 0.15
+        elif boletos >= 3:
+            porcentajeDescuentoTotal += 0.10      
+
+        totalAPagar = (boletos * 12.00) * (1 - porcentajeDescuentoTotal)
+
+        # descuento para la tarjeta del cine(sunpongo) 
+        if metodoPago == "si":
+            totalAPagar *= 0.9
+
+        return totalAPagar
+    
+@app.route("/cinepolis", methods=['GET', 'POST'])
+def cinepolis():
+    totalApagar = 0.0
+    error = None
+    if request.method == 'POST':
+        try:
+            nombre = request.form['nombre']
+            cantCom = int(request.form['cantidadCom'])
+            tarjeta = request.form.get('tarjeta')
+            boletos = int(request.form['cantidadBol'])
+            
+            if boletos > 7 * cantCom:
+                error = "no puedes comprar mas de 7 boletos por persona"
+            else:
+                totalApagar = ticket.calcularPago(boletos, tarjeta)
+            
+        except ValueError:
+            error = "error, ingresa datos validos"
+    return render_template("cinepolis.html",totalApagar=totalApagar,error=error)
+
+# @app.route("/OperasBas")
+# def operas():
+#     return render_template("OperasBas.html")
+
+
+@app.route('/OperasBas', methods=['GET', 'POST'])
+def operas():
+    resultado = None
+    if request.method == 'POST':
+        try:
+            num1 = float(request.form['n1'])
+            num2 = float(request.form['n2'])
+            operacion = request.form.get('operacion')
+
+            if operacion == 'suma':
+                resultado = num1 + num2
+            elif operacion == 'resta':
+                resultado = num1 - num2
+            elif operacion == 'multiplicacion':
+                resultado = num1 * num2
+            elif operacion == 'division':
+                if num2 == 0:
+                    resultado = 'no se puede dividir entre cero'
+                else:
+                    resultado = num1 / num2
+
+        except ValueError:
+            resultado = "ingresa numeros validos"
+
+    return render_template("OperasBas.html", resultado=resultado)
 
 if __name__ == '__main__':
     app.run(debug=True,port=3000)
