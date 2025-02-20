@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block container %}
+{% import "_macros.html" as macros %}
+
+<div class="container">
+    <h1>Datos personales</h1>
+    <div class="row-fluid">
+        <div class="span6 bordered-box" style="border:1px solid #000000; border-radius:5px; padding:10px;">
+            <form action="" method="POST" novalidate>
+                <div class="control-group controls">
+                    {{ macros.campoNuevo(form.nombre, class="form-control") }}
+                </div>
+                <div class="control-group controls">
+                    {{ macros.campoNuevo(form.apellidoPaterno, class="form-control") }}
+                </div>
+                <div class="control-group controls">
+                    {{ macros.campoNuevo(form.apellidoMaterno, class="form-control") }}
+                </div>
+                <div class="row-fluid">
+                    <div class="span12 text-center">
+                        Fecha de nacimiento
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span4">
+                        {{ macros.campoNuevoNumero(form.dia,type="number", min="1", max="31") }}
+                    </div>
+                    <div class="span4">
+                        {{ macros.campoNuevoNumero(form.mes,type="number", min="1", max="12") }}
+                    </div>
+                    <div class="span4">
+                        {{ macros.campoNuevoNumero(form.anio,type="number", min="1", max="2025") }}
+                    </div>
+                </div>
+                <div class="control-group controls">
+                    {{ macros.campoNuevo(form.sexo, class="form-control") }}
+                </div>
+
+                <button type="submit" class="btn btn-primary center-button">Imprimir</button>
+            </form>
+        </div>
+
+        {% if nom %}
+        <div class="span6 bordered-box center-content" style="border:1px solid #000000; border-radius:5px;">
+            <div class="span6 text-center">
+                <p>Hola <strong>{{ nom }} {{ apellidoPaterno }} {{ apellidoMaterno }}</strong></p>
+                <p>Tienes <strong>{{ edad }}</strong> años</p>
+                <p>Tu signo zodiacal chino es {{ signo }}</p>
+            </div>
+            <div class="span6 text-center">
+                <img src="{{ url_for('static', filename='img/' + signo.lower() + '.jpg') }}"
+                    style="height:100px; width:auto; border-radius:50%; background-color:#ed8282; padding:5px;">
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

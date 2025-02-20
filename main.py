@@ -1,5 +1,6 @@
 from flask import Flask, render_template,request
 import forms
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -14,16 +15,59 @@ def index():
 def alumnos():
     nom=''
     ape=''
-    edad=0
     email=''
+    mat=''
     alumno_clase=forms.UserForm(request.form)
-    if request.method == 'post':
+    if request.method == 'POST' and alumno_clase.validate():
         mat=alumno_clase.matricula.data
         ape=alumno_clase.apellido.data
         nom=alumno_clase.nombre.data
         email=alumno_clase.email.data
         print('nombre: {}'.format(nom))
-    return render_template("Alumnos.html",form=alumno_clase)
+    return render_template("Alumnos.html",form=alumno_clase,mat=mat,ape=ape,nom=nom,email=email)
+
+@app.route('/zoodiaco',methods=['GET','POST'])
+def zoodiaco():
+    nom=''
+    apellidoPaterno=''
+    apellidoMaterno=''
+    sexo=''
+    dia=''
+    mes=''
+    anio=''
+    edad=''
+    signo=''
+    ZoodiacForm=forms.ZoodiacForm(request.form)
+    if request.method == 'POST' and ZoodiacForm.validate():
+        nom=ZoodiacForm.nombre.data
+        apellidoPaterno=ZoodiacForm.apellidoPaterno.data
+        apellidoMaterno=ZoodiacForm.apellidoMaterno.data
+        dia = ZoodiacForm.dia.data
+        mes = ZoodiacForm.mes.data
+        anio = ZoodiacForm.anio.data
+        sexo=ZoodiacForm.sexo.data
+        
+        hoy = datetime.today()
+        edad = hoy.year - anio - ((hoy.month, hoy.day) < (mes, dia))
+        
+        signosZodiacoChino = [
+            "Mono", "Gallo", "Perro", "Cerdo", "Rata", "Buey",
+            "Tigre", "Conejo", "Dragon", "Serpiente", "Caballo", "Cabra"
+        ]
+        signo = signosZodiacoChino[anio % 12]
+
+    return render_template("Zoodiaco.html",
+                           form=ZoodiacForm,
+                           nom=nom,
+                           apellidoPaterno=apellidoPaterno,
+                           apellidoMaterno=apellidoMaterno,
+                           dia=dia,
+                           mes=mes,
+                           anio=anio,
+                           sexo=sexo,
+                           edad=edad,
+                           signo=signo)
+    
 
 @app.route('/ejemplo1')
 def ejemplo1():
